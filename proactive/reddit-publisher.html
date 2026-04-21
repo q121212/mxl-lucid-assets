@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MxL Lucid — Reddit Publisher</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0a0a0a;color:#e0e0e0;min-height:100vh;padding:20px}
+h1{color:#ff4444;margin-bottom:8px;font-size:1.4em}
+.subtitle{color:#888;font-size:0.85em;margin-bottom:24px}
+.post-card{background:#161616;border:1px solid #333;border-radius:10px;padding:20px;margin-bottom:20px}
+.post-card h2{color:#ff6b6b;font-size:1em;margin-bottom:12px;border-bottom:1px solid #333;padding-bottom:8px}
+.post-meta{font-size:0.75em;color:#666;margin-bottom:12px}
+.subreddit{color:#ff9500;font-weight:bold}
+.title-input,.body-textarea{width:100%;background:#222;border:1px solid #444;color:#fff;padding:10px;border-radius:6px;font-size:0.9em}
+.body-textarea{min-height:100px;resize:vertical;font-family:monospace}
+.post-url{display:inline-block;margin-top:10px;padding:8px 16px;background:#ff4500;color:white;text-decoration:none;border-radius:20px;font-size:0.85em;font-weight:bold}
+.copy-btn{display:inline-block;margin-top:10px;margin-left:10px;padding:8px 16px;background:#333;color:#fff;border:1px solid #555;border-radius:20px;font-size:0.85em;cursor:pointer}
+.copied{color:#4ade80;font-size:0.75em;margin-left:8px}
+</style>
+</head>
+<body>
+<h1>MxL Lucid — Reddit Publisher</h1>
+<div class="subtitle">Выбери пост → скопируй → отправь на Reddit</div>
+
+<div class="post-card">
+  <h2>r/HistoryPorn — Исторический пост</h2>
+  <div class="post-meta"><span class="subreddit">r/HistoryPorn</span> — 3.8M подписчиков</div>
+  <input class="title-input" id="title1" value="The anarchist sailors who sang 'Eh, Yablochko' before battle in 1917 Russia">
+  <textarea class="body-textarea" id="body1">In 1917, sailors of the Baltic Fleet used this folk melody as a battle hymn. To stay warm on deck during winter, they formed a circle — called "солнышко" (little sun). The song later became associated with Nestor Makhno and the Black Banner anarchist movement.
+
+A modern version was recorded this March (2026) by MxL Lucid, label Myth Repair. Not a reconstruction — a "flash." A fragment of folk memory, released back into the air.
+
+Link: https://band.link/mxl_lucid
+
+If you know Russian folk songs, you might recognize the melody.</textarea>
+  <a class="post-url" href="https://www.reddit.com/r/HistoryPorn/submit" target="_blank">Open r/HistoryPorn</a>
+  <button class="copy-btn" onclick="copyPost(1)">Copy</button>
+  <span class="copied" id="copied1" style="display:none">Copied!</span>
+</div>
+
+<div class="post-card">
+  <h2>r/russianmusic — Release announcement</h2>
+  <div class="post-meta"><span class="subreddit">r/russianmusic</span> — нишевое</div>
+  <input class="title-input" id="title2" value="[Release] MxL Lucid — Эх, яблочко (2026) — anarchist folk from Moscow">
+  <textarea class="body-textarea" id="body2">Hey everyone. Project MxL Lucid (Myth Repair label) released "Эх, яблочко" — a modern take on the famous 1917 folk song. Not historically accurate, not a cover — closer to a "flash."
+
+Release: March 9, 2026
+Platforms: VK Music, Zvuk, Yandex.Music
+Link: https://band.link/mxl_lucid
+
+Would love honest feedback from people who know Russian folk music.</textarea>
+  <a class="post-url" href="https://www.reddit.com/r/russianmusic/submit" target="_blank">Open r/russianmusic</a>
+  <button class="copy-btn" onclick="copyPost(2)">Copy</button>
+  <span class="copied" id="copied2" style="display:none">Copied!</span>
+</div>
+
+<div class="post-card">
+  <h2>r/folkpunk</h2>
+  <div class="post-meta"><span class="subreddit">r/folkpunk</span> — 80K</div>
+  <input class="title-input" id="title3" value="[Release] Эх, яблочко — MxL Lucid (anarchist folk, Russia 2026)">
+  <textarea class="body-textarea" id="body3">March 2026 release — "Эх, яблочко" by MxL Lucid. If you're into anarchist/folk tradition, this might be interesting. The song connects to the revolutionary sailor tradition and the Black Banner movement.
+
+Not a punk band — more folk with anarchist sensibility. Think: Russian revolutionary songs reinterpreted, not reconstructed.
+
+Link: https://band.link/mxl_lucid
+Label: Myth Repair</textarea>
+  <a class="post-url" href="https://www.reddit.com/r/folkpunk/submit" target="_blank">Open r/folkpunk</a>
+  <button class="copy-btn" onclick="copyPost(3)">Copy</button>
+  <span class="copied" id="copied3" style="display:none">Copied!</span>
+</div>
+
+<div class="post-card">
+  <h2>r/Anarchism</h2>
+  <div class="post-meta"><span class="subreddit">r/Anarchism</span> — 320K</div>
+  <input class="title-input" id="title4" value='"Эх, яблочко" — the song sailors sang before battle, now reimagined (2026)'>
+  <textarea class="body-textarea" id="body4">The Black Banner (Чёрное знамя) — the anarchist navy of the revolution. Sailors sang "Эх, яблочко" as they moved toward the Winter Palace. They kept warm with "солнышко" — a circle dance to survive the cold.
+
+MxL Lucid (Moscow, 2026) recorded a new version. Not a folk revival act — something closer to a cultural memory project.
+
+Link: https://band.link/mxl_lucid</textarea>
+  <a class="post-url" href="https://www.reddit.com/r/Anarchism/submit" target="_blank">Open r/Anarchism</a>
+  <button class="copy-btn" onclick="copyPost(4)">Copy</button>
+  <span class="copied" id="copied4" style="display:none">Copied!</span>
+</div>
+
+<div class="post-card">
+  <h2>r/HistoryOnReddit</h2>
+  <div class="post-meta"><span class="subreddit">r/HistoryOnReddit</span> — 2.3M</div>
+  <input class="title-input" id="title5" value="The sailors who sang before the storming of the Winter Palace in 1917">
+  <textarea class="body-textarea" id="body5">Before the October Revolution, sailors of the Baltic Fleet had a tradition: when cold on deck, they formed a circle and moved together in a synchronized pattern. They called it "солнышко" (little sun).
+
+The folk song was "Эх, яблочко" — later a symbol of the anarchist Black Banner movement.
+
+Fast forward to March 2026: Moscow project MxL Lucid released a new version — not as a reconstruction, but as a "flash of folk memory."
+
+Link: https://band.link/mxl_lucid</textarea>
+  <a class="post-url" href="https://www.reddit.com/r/HistoryOnReddit/submit" target="_blank">Open r/HistoryOnReddit</a>
+  <button class="copy-btn" onclick="copyPost(5)">Copy</button>
+  <span class="copied" id="copied5" style="display:none">Copied!</span>
+</div>
+
+<script>
+function copyPost(n){
+  const title=document.getElementById('title'+n).value;
+  const body=document.getElementById('body'+n).value;
+  navigator.clipboard.writeText('Title: '+title+'\n\n'+body).then(()=>{
+    document.getElementById('copied'+n).style.display='inline';
+    setTimeout(()=>document.getElementById('copied'+n).style.display='none',2000);
+  });
+}
+</script>
+</body>
+</html>
