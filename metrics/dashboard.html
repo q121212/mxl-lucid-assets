@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MxL Lucid — Metrics</title>
+<title>MxL Lucid — Metrics (2026-04-22)</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#0a0a0a;color:#e0e0e0;min-height:100vh;padding:20px}
@@ -14,71 +14,114 @@ h1{color:#d72638;margin-bottom:4px}
 .card-value{font-size:2.5em;font-weight:bold;color:#fff}
 .card-label{color:#888;font-size:0.85em;margin-top:4px}
 .card-tag{display:inline-block;background:#1a1a1a;border:1px solid #333;color:#666;font-size:0.7em;padding:2px 8px;border-radius:8px;margin-top:8px}
+.section-title{color:#ff4444;font-size:0.85em;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;font-weight:600}
+.section{margin-bottom:32px}
+.email-card{background:#0d1a0d;border:1px solid #1a3;border-radius:10px;padding:16px}
+.email-card h3{color:#4ade80;font-size:1em;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:0.85em}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid #222}
+th{color:#ff4444;font-weight:600}
 .warn{background:#1a1500;border-left:3px solid #ff9500;padding:12px 16px;border-radius:0 6px 6px 0;font-size:0.85em;color:#888;margin-bottom:24px}
 .info{background:#111;border:1px solid #222;padding:16px;border-radius:8px;font-size:0.85em;color:#666;line-height:1.5}
+a{color:#ff9500}
 </style>
 </head>
 <body>
 <h1>MxL Lucid — Metrics Dashboard</h1>
-<div class="date">Последнее обновление: 2026-04-18 (данные за неделю)</div>
+<div class="date">Обновлено: 2026-04-22 03:00 UTC | Данные за 7 дней</div>
 
-<div class="warn">Для получения актуальных данных — обнови метрики через OpenClaw агента.</div>
+<div class="warn">⚠️ Reddit постинг временно заблокирован (анти-спам фильтры для нового аккаунта). Повторить 2026-04-22 вечером.</div>
 
+<div class="section">
+<div class="section-title">📊 Streaming & Web (7 дней)</div>
 <div class="grid">
-  <div class="card">
-    <div class="card-value">2</div>
-    <div class="card-label">GA4 Active Users (7 дней)</div>
-    <div class="card-tag">Google Analytics</div>
-  </div>
-  <div class="card">
-    <div class="card-value">4</div>
-    <div class="card-label">GA4 Pageviews</div>
-    <div class="card-tag">Google Analytics</div>
-  </div>
-  <div class="card">
-    <div class="card-value">265</div>
-    <div class="card-label">Zvuk Plays (всего)</div>
-    <div class="card-tag">Zvuk</div>
-  </div>
-  <div class="card">
-    <div class="card-value">2</div>
-    <div class="card-label">Zvuk Followers</div>
-    <div class="card-tag">Zvuk</div>
-  </div>
-  <div class="card">
-    <div class="card-value">1</div>
-    <div class="card-label">VK Followers</div>
-    <div class="card-tag">VK</div>
-  </div>
-  <div class="card">
-    <div class="card-value">0</div>
-    <div class="card-label">Telegram Subscribers</div>
-    <div class="card-tag">Telegram</div>
-  </div>
+  <div class="card"><div class="card-value">2</div><div class="card-label">GA4 Active Users</div><div class="card-tag">Google Analytics</div></div>
+  <div class="card"><div class="card-value">3</div><div class="card-label">GA4 Pageviews</div><div class="card-tag">Google Analytics</div></div>
+  <div class="card"><div class="card-value">2</div><div class="card-label">GA4 Sessions</div><div class="card-tag">Google Analytics</div></div>
+  <div class="card"><div class="card-value">~265</div><div class="card-label">Zvuk Total Plays</div><div class="card-tag">Zvuk (all time)</div></div>
+  <div class="card"><div class="card-value">2</div><div class="card-label">Zvuk Followers</div><div class="card-tag">Zvuk</div></div>
+  <div class="card"><div class="card-value">1</div><div class="card-label">VK Followers</div><div class="card-tag">VK</div></div>
+</div>
 </div>
 
+<div class="section">
+<div class="section-title">📧 Email Outreach (ночь 2026-04-21 → 22)</div>
+<div class="email-card">
+<div class="grid" style="gap:8px">
+  <div><div class="card-value" style="font-size:1.5em">14</div><div class="card-label">Total sent</div></div>
+  <div><div class="card-value" style="font-size:1.5em">12</div><div class="card-label">Radio + Podcasts</div></div>
+  <div><div class="card-value" style="font-size:1.5em">1</div><div class="card-label">KEXP in review</div></div>
+  <div><div class="card-value" style="font-size:1.5em">0</div><div class="card-label">New responses</div></div>
+</div>
+
+<table style="margin-top:16px">
+<tr><th>Station</th><th>Email</th><th>Status</th></tr>
+<tr><td>KEXP 90.3 FM</td><td>md@kexp.org</td><td>✅ Sent, full package sent</td></tr>
+<tr><td>KXLU 88.9 FM</td><td>musicdirector@kxlu.com</td><td>✅ Sent</td></tr>
+<tr><td>WFMU</td><td>wfmu@wfmu.org</td><td>✅ Sent</td></tr>
+<tr><td>idobi Radio</td><td>music@idobi.org</td><td>✅ Sent</td></tr>
+<tr><td>Hot Wax Radio</td><td>music@hotwaxradio.com</td><td>✅ Sent</td></tr>
+<tr><td>CFUV 91.5 FM</td><td>music@cfuv.ca</td><td>✅ Sent</td></tr>
+<tr><td>Radio Blackout</td><td>redazione@radioblackout.org</td><td>✅ Sent</td></tr>
+<tr><td>WORT-FM</td><td>music@wortfm.org</td><td>✅ Sent</td></tr>
+<tr><td>Radio Valencia</td><td>info@radiovalencia.es</td><td>✅ Sent</td></tr>
+<tr><td>CFRC 91.9 FM</td><td>techmanager@cfrc.ca</td><td>✅ Sent</td></tr>
+<tr><td>For the Wild</td><td>hello@forthewild.world</td><td>✅ Sent (new)</td></tr>
+<tr><td>HighClouds</td><td>booking@highclouds.org</td><td>✅ Sent (new)</td></tr>
+<tr><td>FolkAlley</td><td>FolkAlley@gmail.com</td><td>✅ Sent (podcast)</td></tr>
+<tr><td>Indie Music Podcast</td><td>submit@indiemusicpodcast.com</td><td>✅ Sent (podcast)</td></tr>
+</table>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📝 Reddit Outreach</div>
 <div class="grid">
-  <div class="card" style="background:#0d1a0d;border-color:#1a3">
-    <div class="card-value" style="color:#4ade80">0</div>
-    <div class="card-label">Email Responses</div>
-    <div class="card-tag">14 sent, waiting</div>
+  <div class="card" style="border-color:#ff9500">
+    <div class="card-value" style="color:#ff9500">⚠️ BLOCKED</div>
+    <div class="card-label">Antispam filter on new account</div>
+    <div class="card-tag">Try again 2026-04-22 evening</div>
   </div>
-  <div class="card" style="background:#0d1a0d;border-color:#1a3">
-    <div class="card-value" style="color:#4ade80">10</div>
-    <div class="card-label">Reddit Posts</div>
-    <div class="card-tag">0 published</div>
+  <div class="card">
+    <div class="card-value" style="color:#ff6b6b">7</div>
+    <div class="card-label">Posts ready</div>
+    <div class="card-tag">All drafts waiting</div>
   </div>
-  <div class="card" style="background:#0d1a0d;border-color:#1a3">
-    <div class="card-value" style="color:#4ade80">1</div>
-    <div class="card-label">KEXP Response</div>
-    <div class="card-tag">In review</div>
-  </div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">🆕 New Platforms Found (2026-04-22)</div>
+<div class="info">
+  <strong>Найдено за ночь:</strong><br>
+  • <strong>INDIEMONO</strong> — free folk Spotify playlist (indiemono.com/submit) — Max нужен аккаунт<br>
+  • <strong>SubmitHub</strong> — 1 free submission/day для блогов/плейлистов (submithub.com) — Max нужен аккаунт<br>
+  • <strong>Folk Files Podcast</strong> — folk music podcast<br>
+  • <strong>HighClouds</strong> — world music blog + radio (email sent)<br>
+  • <strong>For the Wild</strong> — music podcast (email sent)<br>
+  • <strong>Barndoor Radio</strong> — folk/bluegrass (MX issue, need alt email)<br>
+  • <strong>ISSA Radio</strong> — DEAD (removed from list)<br>
+  • Playlist curators — droptrack.com (researched)
+</div>
+</div>
+
+<div class="section">
+<div class="section-title">📋 Action Items for Max (2026-04-22)</div>
+<div class="info">
+1. <strong>Reddit</strong> — попробовать 1-2 поста вечером (фильтры снимутся)<br>
+2. <strong>INDIEMONO</strong> — зарегистрироваться + отправить трек (free)<br>
+3. <strong>SubmitHub</strong> — зарегистрироваться + 1 free submission/day<br>
+4. <strong>Discogs</strong> — проверить статус аккаунта (Pending Review)<br>
+5. <strong>VK посты</strong> — опубликовать 1 пост из drafts/ (5 мин)<br>
+6. <strong>Gmail</strong> — проверить ответы от радиостанций
+</div>
 </div>
 
 <div class="info">
-  <strong>BandLink:</strong> <a href="https://band.link/mxl_lucid" style="color:#ff9500">band.link/mxl_lucid</a><br>
-  <strong>VK:</strong> <a href="https://vk.com/MxL_lucid" style="color:#ff9500">vk.com/MxL_lucid</a><br>
-  <strong>Telegram:</strong> <a href="https://t.me/MxL_lucid_band" style="color:#ff9500">@MxL_lucid_band</a>
+  <strong>Links:</strong> <a href="https://band.link/mxl_lucid">band.link/mxl_lucid</a> | 
+  <a href="https://vk.com/MxL_lucid">VK</a> | 
+  <a href="https://t.me/MxL_lucid_band">Telegram</a> | 
+  <a href="https://q121212.github.io/mxl-lucid-assets/">Public Tools Site</a>
 </div>
 </body>
 </html>
