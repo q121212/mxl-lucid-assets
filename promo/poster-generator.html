@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Генератор афиш — «Эх, яблочко»</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0a; color:#ddd; font-family:'Montserrat',sans-serif; min-height:100vh; }
+  .container { max-width:800px; margin:0 auto; padding:30px 20px; }
+  h1 { font-size:clamp(1.8rem,5vw,2.5rem); font-weight:900; color:#c00; text-align:center; margin-bottom:5px; letter-spacing:-1px; }
+  .subtitle { text-align:center; color:#888; margin-bottom:30px; }
+
+  .controls { background:#111; border:1px solid #222; border-radius:12px; padding:25px; margin-bottom:30px; display:flex; flex-wrap:wrap; gap:15px; align-items:end; justify-content:center; }
+  .control-group { display:flex; flex-direction:column; gap:5px; }
+  .control-group label { color:#888; font-size:.8rem; text-transform:uppercase; letter-spacing:1px; }
+  .control-group input { background:#222; border:1px solid #333; color:#fff; padding:10px 15px; border-radius:8px; font-size:1rem; font-family:'Montserrat',sans-serif; width:200px; transition:border .3s; }
+  .control-group input:focus { outline:none; border-color:#c00; }
+  button { background:#c00; color:#fff; border:none; padding:12px 30px; font-size:1rem; font-weight:600; border-radius:30px; cursor:pointer; transition:all .3s; font-family:'Montserrat',sans-serif; text-transform:uppercase; letter-spacing:1px; }
+  button:hover { background:#e11; transform:translateY(-2px); box-shadow:0 6px 20px rgba(204,0,0,.3); }
+  button.secondary { background:#222; border:1px solid #444; }
+  button.secondary:hover { background:#333; }
+
+  .preview { text-align:center; margin-bottom:30px; }
+  canvas { max-width:100%; border-radius:8px; box-shadow:0 12px 40px rgba(0,0,0,.5); }
+
+  .share-bar { text-align:center; padding:20px; }
+  .share-btn { background:#1da1f2; color:#fff; border:none; padding:10px 25px; font-size:.9rem; border-radius:25px; cursor:pointer; margin:5px; display:inline-flex; align-items:center; gap:8px; }
+  .share-btn.tg { background:#08c; }
+  .preorder { text-align:center; margin-top:40px; padding:30px; background:#111; border-radius:12px; border:1px solid #333; }
+  .preorder a { color:#c00; font-weight:600; text-decoration:none; font-size:1.1rem; }
+  .preorder a:hover { text-decoration:underline; }
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#c00; color:#fff; padding:12px 30px; border-radius:30px; font-weight:600; z-index:100; animation:fadeUp .3s ease; display:none; }
+  @keyframes fadeUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Генератор афиш</h1>
+  <p class="subtitle">Конструктивизм. 1917. Твоя афиша «Эх, яблочко».</p>
+
+  <div class="controls">
+    <div class="control-group">
+      <label>Твой город</label>
+      <input type="text" id="cityInput" placeholder="Петроград" value="" maxlength="30">
+    </div>
+    <button onclick="generatePoster()">Создать афишу</button>
+    <button class="secondary" onclick="downloadPoster()">📥 Скачать</button>
+  </div>
+
+  <div class="preview">
+    <canvas id="poster" width="800" height="1132"></canvas>
+  </div>
+
+  <div class="share-bar">
+    <button class="share-btn tg" onclick="share('tg')">📱 Поделиться в Telegram</button>
+    <button class="share-btn" onclick="share('tw')">🐦 Twitter</button>
+  </div>
+
+  <div class="preorder">
+    <p style="color:#888; margin-bottom:10px;">«Эх, яблочко» — международный релиз 15 мая 2026</p>
+    <a href="https://distrokid.com/hyperfollow/mxllucid/-" target="_blank">🎵 Пре-сейв / Pre-order</a>
+    <br><br>
+    <a href="https://band.link/mxl_lucid" target="_blank">BandLink</a>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+function generatePoster() {
+  const canvas = document.getElementById('poster');
+  const ctx = canvas.getContext('2d');
+  const city = document.getElementById('cityInput').value.trim() || 'Петроград';
+
+  // Background — black
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0, 0, 800, 1132);
+
+  // Constructivist geometric elements
+  // Red diagonal bands
+  ctx.fillStyle = '#cc0000';
+  ctx.fillRect(0, 0, 180, 1132);
+  ctx.fillRect(620, 0, 180, 1132);
+  
+  // Horizontal red band
+  ctx.fillRect(0, 440, 800, 12);
+  ctx.fillRect(0, 700, 800, 12);
+
+  // Angled constructivist shapes
+  ctx.save();
+  ctx.translate(400, 200);
+  ctx.rotate(-0.3);
+  ctx.fillStyle = '#cc0000';
+  ctx.fillRect(-300, -30, 600, 60);
+  ctx.restore();
+
+  // Top-right triangle
+  ctx.beginPath();
+  ctx.moveTo(800, 0);
+  ctx.lineTo(800, 180);
+  ctx.lineTo(620, 0);
+  ctx.fill();
+
+  // Bottom-left triangle
+  ctx.beginPath();
+  ctx.moveTo(180, 1132);
+  ctx.lineTo(300, 1132);
+  ctx.lineTo(180, 1012);
+  ctx.fill();
+
+  // Small decorative elements
+  ctx.fillStyle = '#cc0000';
+  for (let i = 0; i < 5; i++) {
+    ctx.fillRect(620, 240 + i * 80, 15, 45);
+    ctx.fillRect(165, 200 + i * 80, 15, 45);
+  }
+
+  // Small circles  
+  ctx.fillStyle = '#cc0000';
+  for (let i = 0; i < 8; i++) {
+    ctx.beginPath();
+    ctx.arc(200 + i * 55, 320, 8, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Date strip
+  ctx.fillStyle = '#333';
+  ctx.fillRect(0, 360, 800, 65);
+  
+  // MAIN TITLE
+  ctx.save();
+  ctx.shadowColor = '#cc0000';
+  ctx.shadowBlur = 30;
+  ctx.fillStyle = '#ff0000';
+  ctx.font = '900 72px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('«ЭХ, ЯБЛОЧКО»', 400, 170);
+  ctx.restore();
+
+  // Subtitle
+  ctx.fillStyle = '#fff';
+  ctx.font = '600 22px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('народная песня • новое звучание', 400, 220);
+
+  // Date
+  ctx.fillStyle = '#fff';
+  ctx.font = '800 32px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('15 МАЯ 2026', 400, 408);
+
+  // Artist
+  ctx.fillStyle = '#fff';
+  ctx.font = '900 44px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('MxL LUCID', 400, 500);
+
+  // Label
+  ctx.fillStyle = '#888';
+  ctx.font = '600 16px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('MYTH REPAIR', 400, 530);
+
+  // CITY — main hook
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0, 570, 800, 110);
+  ctx.fillStyle = '#ff0000';
+  ctx.font = '900 64px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText(city.toUpperCase(), 400, 652);
+
+  // Platforms text
+  ctx.fillStyle = '#ddd';
+  ctx.font = '600 15px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('SPOTIFY • APPLE MUSIC • YOUTUBE MUSIC • DEEZER • TIDAL', 400, 750);
+  ctx.fillText('VK • ZVUK • YANDEX.MUSIC', 400, 780);
+
+  // Pre-order
+  ctx.fillStyle = '#cc0000';
+  ctx.font = '800 28px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('ПРЕ-СЕЙВ ОТКРЫТ', 400, 840);
+  
+  ctx.fillStyle = '#fff';
+  ctx.font = '600 16px Montserrat, sans-serif';
+  ctx.fillText('distrokid.com/hyperfollow/mxllucid/-', 400, 880);
+
+  // QR placeholder (bottom)
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(290, 920, 30, 30);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(295, 925, 20, 20);
+  ctx.fillStyle = '#ccc';
+  ctx.font = '12px Montserrat, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('band.link/mxl_lucid', 400, 975);
+
+  // Constructivist borders at bottom
+  ctx.fillStyle = '#cc0000';
+  for (let i = 0; i < 9; i++) {
+    ctx.fillRect(100 + i * 75, 1000, 50, 8);
+  }
+
+  // Decorative lines
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(200, 440);
+  ctx.lineTo(600, 440);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(200, 700);
+  ctx.lineTo(600, 700);
+  ctx.stroke();
+
+  showToast('Афиша для города «' + city + '» готова!');
+}
+
+function downloadPoster() {
+  const canvas = document.getElementById('poster');
+  const link = document.createElement('a');
+  link.download = 'mxllucid-yablochko-poster.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('📥 Афиша скачана!');
+}
+
+function share(platform) {
+  const canvas = document.getElementById('poster');
+  canvas.toBlob(blob => {
+    // For now share the page link since browsers can't natively share files + text
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('Моя афиша «Эх, яблочко» — создай свою!');
+    const links = {
+      tg: `https://t.me/share/url?url=${url}&text=${text}`,
+      tw: `https://twitter.com/intent/tweet?text=${text}&url=${url}`
+    };
+    window.open(links[platform], '_blank', 'width=600,height=400');
+  });
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2500);
+}
+
+// Generate default poster on load
+generatePoster();
+</script>
+</body>
+</html>

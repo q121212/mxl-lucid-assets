@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>11 дней до «Эх, яблочко» — Календарь 1917</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0a; color:#ddd; font-family:'Montserrat',sans-serif; min-height:100vh; overflow-x:hidden; }
+  .bg { position:fixed; top:0; left:0; width:100%; height:100%; opacity:.03; background:radial-gradient(circle at 30% 20%,#c00 0%,transparent 50%),radial-gradient(circle at 70% 80%,#333 0%,transparent 50%); z-index:0; pointer-events:none; }
+  .snow { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+  .snowflake { position:absolute; color:#333; font-size:12px; animation:fall linear infinite; opacity:.5; }
+  @keyframes fall { 0% { transform:translateY(-10vh) rotate(0deg); } 100% { transform:translateY(110vh) rotate(360deg); } }
+
+  .container { position:relative; z-index:1; max-width:800px; margin:0 auto; padding:40px 20px; }
+  h1 { font-size:clamp(2rem,5vw,3rem); font-weight:900; color:#c00; text-align:center; margin-bottom:5px; letter-spacing:-1px; }
+  .subtitle { text-align:center; color:#888; margin-bottom:10px; font-size:.95rem; }
+  .countdown { text-align:center; margin:30px 0; }
+  .days-left { font-size:clamp(3rem,8vw,5rem); font-weight:900; color:#ff0000; display:block; line-height:1; }
+  .days-label { color:#888; font-size:1rem; text-transform:uppercase; letter-spacing:3px; }
+
+  .calendar-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px; margin:30px 0; }
+  .day-card { background:#111; border:2px solid #222; border-radius:12px; padding:20px 15px; text-align:center; cursor:pointer; transition:all .3s; position:relative; overflow:hidden; min-height:140px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .day-card:hover { border-color:#444; transform:translateY(-3px); }
+  .day-card.revealed { border-color:#c00; background:#1a0a0a; cursor:default; }
+  .day-card.today { border-color:#ff0000; box-shadow:0 0 25px rgba(204,0,0,.2); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { box-shadow:0 0 25px rgba(204,0,0,.2); } 50% { box-shadow:0 0 50px rgba(204,0,0,.4); } }
+  .day-card.locked { cursor:not-allowed; opacity:.4; }
+  .day-card .day-num { font-size:2.5rem; font-weight:900; color:#333; }
+  .day-card.revealed .day-num, .day-card.today .day-num { color:#c00; }
+  .day-card .day-date { font-size:.75rem; color:#666; margin-top:5px; }
+  .day-card .day-snippet { font-size:.8rem; color:#888; margin-top:8px; display:none; }
+  .day-card.revealed .day-snippet { display:block; }
+  .day-card .lock-icon { font-size:1.5rem; }
+  .day-card.locked .lock-icon { display:block; }
+  .day-card.revealed .lock-icon, .day-card.today .lock-icon { display:none; }
+
+  .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.85); z-index:100; display:none; align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.active { display:flex; }
+  .modal { background:#111; border:2px solid #c00; border-radius:16px; padding:40px 30px; max-width:550px; width:100%; position:relative; animation:modalIn .3s ease; }
+  @keyframes modalIn { from { opacity:0; transform:scale(.9); } to { opacity:1; transform:scale(1); } }
+  .modal .close { position:absolute; top:15px; right:20px; background:none; border:none; color:#888; font-size:1.5rem; cursor:pointer; }
+  .modal .close:hover { color:#c00; }
+  .modal .day-title { font-size:1.6rem; color:#c00; font-weight:800; margin-bottom:15px; }
+  .modal .day-content { line-height:1.8; font-size:1.05rem; color:#ccc; }
+  .modal .day-content .fact { background:#1a1a1a; border-left:3px solid #c00; padding:12px 15px; margin:15px 0; border-radius:4px; font-style:italic; }
+  .modal .day-content .lyric { color:#fff; font-size:1.2rem; font-style:italic; text-align:center; padding:20px; background:#1a0a0a; border-radius:8px; margin:15px 0; }
+  .modal .day-content img { max-width:100%; border-radius:8px; margin:10px 0; }
+
+  .share-bar { text-align:center; padding:30px; }
+  .share-btn { background:#1da1f2; color:#fff; border:none; padding:10px 25px; font-size:.9rem; border-radius:25px; cursor:pointer; margin:5px; display:inline-flex; align-items:center; gap:8px; }
+  .share-btn.tg { background:#08c; }
+  .preorder { text-align:center; margin-top:30px; padding:30px; background:#111; border-radius:12px; border:1px solid #333; }
+  .preorder a { color:#c00; font-weight:600; text-decoration:none; font-size:1.1rem; }
+  .preorder a:hover { text-decoration:underline; }
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#c00; color:#fff; padding:12px 30px; border-radius:30px; font-weight:600; z-index:200; display:none; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="snow" id="snow"></div>
+
+<div class="container">
+  <h1>11 дней до «Эх, яблочко»</h1>
+  <p class="subtitle">Каждый день — новый фрагмент истории. Открывай утром.</p>
+
+  <div class="countdown">
+    <span class="days-left" id="daysCount">11</span>
+    <span class="days-label">дней до релиза</span>
+  </div>
+
+  <div class="calendar-grid" id="calendar"></div>
+
+  <div class="share-bar">
+    <p style="color:#888; margin-bottom:15px;">Приходи каждый день — или делись с теми, кому это близко:</p>
+    <button class="share-btn tg" onclick="share('tg')">📱 Telegram</button>
+    <button class="share-btn" onclick="share('tw')">🐦 Twitter</button>
+    <button class="share-btn" style="background:#555;" onclick="copyLink()">🔗 Ссылка</button>
+  </div>
+
+  <div class="preorder">
+    <p style="color:#888; margin-bottom:10px;">Релиз 15 мая 2026</p>
+    <a href="https://distrokid.com/hyperfollow/mxllucid/-" target="_blank">🎵 Пре-сейв / Pre-order</a>
+    <br><br>
+    <a href="https://band.link/mxl_lucid" target="_blank">BandLink</a>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="close" onclick="closeModal()">✕</button>
+    <div class="day-title" id="modalTitle"></div>
+    <div class="day-content" id="modalContent"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const RELEASE_DATE = new Date('2026-05-15T00:00:00Z');
+
+// 11 days of content (May 5 to May 15)
+const days = [
+  {
+    date: '2026-05-05',
+    title: 'Кто пел «Яблочко»?',
+    emoji: '⚓',
+    content: `<p>«Яблочко» — не просто песня. Это <strong>частушка-танец</strong>, которую пели русские моряки на палубе, крутя канат, чтобы согреться.</p>
+<div class="fact">Впервые зафиксирована в порту Одессы. Матросы выкрикивали короткие четверостишия, а остальные подхватывали припев.</div>
+<p>Каждый куплет — импровизация. Частушка живёт, пока её поют.</p>`
+  },
+  {
+    date: '2026-05-06',
+    title: 'Красные против Белых',
+    emoji: '🔴',
+    content: `<p>В Гражданскую войну «Яблочко» пели <strong>обе стороны</strong>. Красные — про мировую революцию. Белые — про «красную заразу». Песня стала оружием.</p>
+<div class="fact">Самый известный куплет красноармейцев: «Эх, яблочко, куда котишься? / Ко мне в рот попадёшь — не воротишься!»</div>
+<p>Народная песня не выбирает сторону. Она звучит для всех.</p>`
+  },
+  {
+    date: '2026-05-07',
+    title: 'Революция и ритм',
+    emoji: '🔥',
+    content: `<p>Ритм «Яблочка» — это <strong>ритм работы</strong>. Канат крутится, тело движется, голос звучит. Февраль 1917. Матросы первыми подняли восстание в Петрограде.</p>
+<div class="fact">Кронштадтские моряки считали «Яблочко» своей песней. В октябре 1917 именно они привели «Аврору» к Зимнему.</div>
+<p>Песня и бунт — одного корня.</p>`
+  },
+  {
+    date: '2026-05-08',
+    title: 'Запись: подвал и красный свет',
+    emoji: '🎙️',
+    content: `<p>MxL Lucid записывал «Эх, яблочко» в подвале. Красный свет. Одна лампа. Шум города за стеной.</p>
+<div class="fact">Использованы полевые записи: реальные звуки воды, ветра, шагов по бетонному полу. Вокал записан в один дубль — без автотюна.</div>
+<p>Никакой ностальгии. Никакой реконструкции. Только фрагмент живой памяти.</p>`
+  },
+  {
+    date: '2026-05-09',
+    title: 'Строка дня',
+    emoji: '📝',
+    content: `<div class="lyric">
+«Эх, яблочко, да на тарелочке —<br>
+Не замерзнем мы на палубе,<br>
+Эх, яблочко, да наливное —<br>
+Море вынесет, братва спасёт»
+</div>
+<p>Этот куплет — <strong>оригинальный текст MxL Lucid</strong>. Он написан специально для записи и впервые звучит в этой версии песни.</p>`
+  },
+  {
+    date: '2026-05-10',
+    title: 'Инструменты',
+    emoji: '🎸',
+    content: `<p>В записи использованы:</p>
+<p>• Гитара — чистый сигнал, без обработки<br>
+• Полевые шумы — вода, ветер, шаги<br>
+• Голос — живой, в один дубль<br>
+• Тишина — как инструмент</p>
+<div class="fact">MxL Lucid: «Я хотел, чтобы было слышно пространство между звуками. Это не про ноты — это про воздух вокруг них».</div>`
+  },
+  {
+    date: '2026-05-11',
+    title: 'Myth Repair — лейбл без лейбла',
+    emoji: '🏚️',
+    content: `<p><strong>Myth Repair</strong> — это не лейбл в обычном смысле. Это серия релизов-артефактов. Каждый — «починка» повреждённого мифа.</p>
+<div class="fact">«Эх, яблочко» — первый релиз в серии Myth Repair. Следующим будет реконструкция забытой рабочей песни уральских заводов.</div>
+<p>Мифы нужно не восстанавливать — их нужно чинить заново, из того, что осталось.</p>`
+  },
+  {
+    date: '2026-05-12',
+    title: 'Обложка: конструктивизм',
+    emoji: '🎨',
+    content: `<p>Дизайн обложки — <strong>отсылка к советскому конструктивизму 1920-х</strong>. Красный, чёрный, острые углы. Но вместо пропаганды — фрагмент.</p>
+<div class="fact">Обложка сделана вручную: коллаж из архивных фото + современная типографика. Никакого AI-арта.</div>
+<p>Как и сама песня — не реконструкция, а новая сборка из старых деталей.</p>`
+  },
+  {
+    date: '2026-05-13',
+    title: 'Море и холод',
+    emoji: '🌊',
+    content: `<p><strong>Холод</strong> — главный герой этой песни. Не политика. Не история. Холод. Моряки крутили канат не ради дисциплины — чтобы не замёрзнуть.</p>
+<div class="fact">Температура на палубе Балтийского флота в феврале 1917: −20°C. Матросы грелись движением и песней.</div>
+<p>«Эх, яблочко» — это песня о том, как люди греют друг друга голосами.</p>`
+  },
+  {
+    date: '2026-05-14',
+    title: 'Завтра',
+    emoji: '⏰',
+    content: `<p><strong>Завтра — 15 мая.</strong> «Эх, яблочко» выходит на всех платформах.</p>
+<div class="fact">Вы сможете услышать его на: Spotify, Apple Music, YouTube Music, Deezer, Tidal, VK, Zvuk, Яндекс.Музыка.</div>
+<p>11 дней мы шли к этому моменту. Народная песня возвращается — не в музей, а в эфир.</p>
+<div class="lyric">Эх, яблочко, да на тарелочке —<br>Завтра в море выйдет песня,<br>Эх, яблочко, да наливное —<br>Ты услышишь. Это честно.</div>`
+  },
+  {
+    date: '2026-05-15',
+    title: 'РЕЛИЗ',
+    emoji: '🍎',
+    content: `<p style="font-size:1.3rem; color:#ff0000; font-weight:800; text-align:center;">СЕГОДНЯ</p>
+<p>«Эх, яблочко» — в эфире. На всех платформах. Для всех.</p>
+<div class="fact">Спасибо, что прошли эти 11 дней вместе. Народная песня — это не запись. Это момент, когда люди слышат её вместе.</div>
+<p style="text-align:center; margin-top:20px;">
+<a href="https://band.link/mxl_lucid" target="_blank" style="color:#ff0000; font-weight:800; font-size:1.2rem;">Слушать на всех платформах →</a>
+</p>`
+  }
+];
+
+function getTodayUTC() {
+  const now = new Date();
+  return now.toISOString().split('T')[0];
+}
+
+function daysUntilRelease() {
+  const today = new Date(getTodayUTC() + 'T00:00:00Z');
+  const diff = RELEASE_DATE - today;
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
+
+function getDayIndex(dateStr) {
+  return days.findIndex(d => d.date === dateStr);
+}
+
+function renderCalendar() {
+  const today = getTodayUTC();
+  const container = document.getElementById('calendar');
+  const daysLeft = daysUntilRelease();
+  document.getElementById('daysCount').textContent = daysLeft;
+
+  container.innerHTML = days.map((day, idx) => {
+    const dateObj = new Date(day.date + 'T00:00:00Z');
+    const dateStr = dateObj.toLocaleDateString('ru', { day:'numeric', month:'short' });
+    const isRevealed = day.date <= today;
+    const isToday = day.date === today;
+    const isLocked = day.date > today;
+
+    let cls = 'day-card';
+    if (isToday) cls += ' today';
+    else if (isRevealed) cls += ' revealed';
+    else cls += ' locked';
+
+    return `<div class="${cls}" onclick="${isLocked ? '' : `openDay(${idx})`}" title="${day.date}">
+      ${isLocked ? '<span class="lock-icon">🔒</span>' : ''}
+      <span class="day-num">${isLocked ? '?' : day.emoji}</span>
+      <span class="day-date">${dateStr}</span>
+      ${isRevealed ? `<span class="day-snippet">${day.title}</span>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function openDay(idx) {
+  const day = days[idx];
+  document.getElementById('modalTitle').textContent = `${day.emoji} ${day.title}`;
+  document.getElementById('modalContent').innerHTML = day.content;
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function share(platform) {
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent('11 дней до релиза «Эх, яблочко» — открываю новый фрагмент истории каждый день. Присоединяйся!');
+  const links = {
+    tg: `https://t.me/share/url?url=${url}&text=${text}`,
+    tw: `https://twitter.com/intent/tweet?text=${text}&url=${url}`
+  };
+  window.open(links[platform], '_blank', 'width=600,height=400');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = '🔗 Ссылка скопирована!';
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 2500);
+  });
+}
+
+// Snow effect (for the "cold deck" atmosphere)
+function createSnow() {
+  const snow = document.getElementById('snow');
+  for (let i = 0; i < 40; i++) {
+    const flake = document.createElement('span');
+    flake.className = 'snowflake';
+    flake.textContent = ['·','•','❄','*'][Math.floor(Math.random() * 4)];
+    flake.style.left = Math.random() * 100 + '%';
+    flake.style.animationDuration = (Math.random() * 10 + 10) + 's';
+    flake.style.animationDelay = Math.random() * 15 + 's';
+    flake.style.fontSize = (Math.random() * 8 + 6) + 'px';
+    snow.appendChild(flake);
+  }
+}
+
+createSnow();
+renderCalendar();
+
+// Auto-open today's content if it hasn't been seen
+const today = getTodayUTC();
+const dayIdx = getDayIndex(today);
+if (dayIdx >= 0 && !sessionStorage.getItem('opened_' + today)) {
+  sessionStorage.setItem('opened_' + today, '1');
+  setTimeout(() => openDay(dayIdx), 500);
+}
+</script>
+</body>
+</html>

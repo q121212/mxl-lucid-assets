@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Допиши куплет — «Эх, яблочко»</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0a0a0a; color:#ddd; font-family:'Montserrat',sans-serif; min-height:100vh; overflow-x:hidden; }
+  .bg { position:fixed; top:0; left:0; width:100%; height:100%; opacity:.04; background:radial-gradient(circle at 50% 30%,#c00 0%,transparent 70%),radial-gradient(circle at 80% 70%,#333 0%,transparent 40%); z-index:0; }
+  .container { position:relative; z-index:1; max-width:700px; margin:0 auto; padding:40px 20px; }
+  h1 { font-size:clamp(2rem,6vw,3.5rem); font-weight:800; color:#c00; text-align:center; margin-bottom:5px; letter-spacing:-1px; }
+  .subtitle { text-align:center; color:#888; font-size:1rem; margin-bottom:40px; }
+
+  .verse-starter { background:#111; border:2px solid #222; padding:30px; border-radius:12px; margin-bottom:30px; position:relative; }
+  .verse-starter::before { content:'1917'; position:absolute; top:10px; right:20px; color:#c00; font-weight:800; font-size:.8rem; opacity:.5; }
+  .verse-starter .line { font-size:1.4rem; padding:8px 0; color:#fff; font-weight:600; }
+  .verse-starter .line.original { color:#c00; }
+  .verse-starter .line.prompt { color:#666; font-style:italic; border-left:3px solid #c00; padding-left:15px; margin-top:15px; }
+
+  .input-area { margin-bottom:30px; }
+  textarea { width:100%; background:#111; border:2px solid #333; color:#fff; padding:20px; font-size:1.1rem; border-radius:12px; resize:vertical; min-height:120px; font-family:'Montserrat',sans-serif; line-height:1.8; transition:border .3s; }
+  textarea:focus { outline:none; border-color:#c00; }
+  textarea::placeholder { color:#555; }
+  .rules { color:#666; font-size:.85rem; margin:10px 0 20px; line-height:1.6; }
+  button { background:#c00; color:#fff; border:none; padding:14px 40px; font-size:1.1rem; font-weight:600; border-radius:30px; cursor:pointer; transition:all .3s; font-family:'Montserrat',sans-serif; text-transform:uppercase; letter-spacing:1px; }
+  button:hover { background:#e11; transform:translateY(-2px); box-shadow:0 6px 20px rgba(204,0,0,.3); }
+  button:disabled { background:#333; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .couplets-section h2 { font-size:1.6rem; color:#c00; margin-bottom:20px; font-weight:800; }
+  .empty { color:#555; text-align:center; padding:40px; font-style:italic; }
+  .couplet-card { background:#111; border:1px solid #222; border-radius:12px; padding:25px; margin-bottom:15px; position:relative; transition:border .3s; }
+  .couplet-card:hover { border-color:#444; }
+  .couplet-card .text { font-size:1.15rem; line-height:1.8; color:#ddd; white-space:pre-line; font-style:italic; }
+  .couplet-card .meta { color:#666; font-size:.8rem; margin-top:15px; display:flex; justify-content:space-between; align-items:center; }
+  .couplet-card .like-btn { background:none; border:1px solid #444; color:#888; padding:5px 15px; font-size:.8rem; border-radius:20px; cursor:pointer; transition:all .2s; text-transform:none; letter-spacing:0; }
+  .couplet-card .like-btn:hover { border-color:#c00; color:#c00; transform:none; box-shadow:none; }
+  .couplet-card .like-btn.liked { background:#c00; color:#fff; border-color:#c00; }
+
+  .tabs { display:flex; gap:10px; margin-bottom:20px; }
+  .tab { background:none; border:2px solid #333; color:#888; padding:10px 25px; border-radius:25px; cursor:pointer; font-size:.9rem; transition:all .3s; text-transform:none; letter-spacing:0; }
+  .tab:hover { border-color:#c00; color:#fff; transform:none; box-shadow:none; }
+  .tab.active { background:#c00; color:#fff; border-color:#c00; }
+
+  .share-bar { margin-top:40px; text-align:center; padding:20px; }
+  .share-bar p { color:#888; margin-bottom:15px; }
+  .share-btn { background:#1da1f2; color:#fff; border:none; padding:10px 25px; font-size:.9rem; border-radius:25px; cursor:pointer; margin:5px; text-transform:none; letter-spacing:0; display:inline-flex; align-items:center; gap:8px; }
+  .share-btn.tg { background:#08c; }
+
+  .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#c00; color:#fff; padding:12px 30px; border-radius:30px; font-weight:600; z-index:100; animation:fadeUp .3s ease; }
+  @keyframes fadeUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+  .preorder { text-align:center; margin-top:40px; padding:30px; background:#111; border-radius:12px; border:1px solid #333; }
+  .preorder a { color:#c00; font-weight:600; text-decoration:none; font-size:1.1rem; }
+  .preorder a:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="container">
+  <h1>Допиши куплет</h1>
+  <p class="subtitle">Частушка живёт, пока её поют. Что дальше?</p>
+
+  <div class="verse-starter">
+    <div class="line original">Эх, яблочко, да на тарелочке —</div>
+    <div class="line">Не замерзнем мы на палубе,</div>
+    <div class="line">Эх, яблочко, да наливное —</div>
+    <div class="line">Море вынесет, братва спасёт.</div>
+    <div class="line prompt">А дальше — ты. Напиши свой куплет.<br>Форма простая: 4 строки, ритм частушки.</div>
+  </div>
+
+  <div class="input-area">
+    <textarea id="verseInput" placeholder="Эх, яблочко, да на тарелочке —
+Над волнами ветер злой гудит,
+Эх, яблочко, да наливное —
+...
+(твой куплет, 4 строки)"></textarea>
+    <div class="rules">
+      📜 Правила: 4 строки · ритм частушки · припев «Эх, яблочко» приветствуется · можно про что угодно — холод, бунт, любовь, надежду
+    </div>
+    <button onclick="submitVerse()">Отправить куплет</button>
+  </div>
+
+  <div class="couplets-section">
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('latest')">Новые</button>
+      <button class="tab" onclick="showTab('top')">Лучшие</button>
+    </div>
+    <h2 id="tabTitle">Новые куплеты</h2>
+    <div id="coupletsList"></div>
+  </div>
+
+  <div class="share-bar">
+    <p>Поделись страницей — чем больше людей допишут, тем длиннее песня:</p>
+    <button class="share-btn tg" onclick="share('tg')">📱 Telegram</button>
+    <button class="share-btn" onclick="share('tw')">🐦 Twitter</button>
+    <button class="copy-btn share-btn" onclick="copyLink()">🔗 Копировать ссылку</button>
+  </div>
+
+  <div class="preorder">
+    <p style="color:#888; margin-bottom:10px;">«Эх, яблочко» — международный релиз 15 мая 2026</p>
+    <a href="https://distrokid.com/hyperfollow/mxllucid/-" target="_blank">🎵 Пре-сейв / Pre-order</a>
+    <br><br>
+    <a href="https://band.link/mxl_lucid" target="_blank">BandLink</a>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+const STORAGE_KEY = 'mxllucid_couplets_v2';
+let currentTab = 'latest';
+
+function loadCouplets() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveCouplets(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+function submitVerse() {
+  const input = document.getElementById('verseInput');
+  const text = input.value.trim();
+  if (!text || text.split('\n').filter(l=>l.trim()).length < 2) {
+    showToast('Напиши хотя бы 2 строки!');
+    return;
+  }
+  if (text.length > 500) { showToast('Слишком длинно — максимум 500 символов'); return; }
+
+  const couplets = loadCouplets();
+  couplets.push({
+    id: Date.now(),
+    text: text,
+    likes: 0,
+    likedBy: [],
+    date: new Date().toISOString()
+  });
+  saveCouplets(couplets);
+  input.value = '';
+  showToast('🔥 Куплет добавлен! Песня растёт.');
+  renderCouplets();
+}
+
+function toggleLike(id) {
+  const couplets = loadCouplets();
+  const idx = couplets.findIndex(c => c.id === id);
+  if (idx === -1) return;
+  const c = couplets[idx];
+  c.likedBy = c.likedBy || [];
+  const visitorId = localStorage.getItem('mxllucid_visitor') || (Date.now() + Math.random()).toString(36);
+  localStorage.setItem('mxllucid_visitor', visitorId);
+
+  if (c.likedBy.includes(visitorId)) {
+    c.likes = Math.max(0, c.likes - 1);
+    c.likedBy = c.likedBy.filter(v => v !== visitorId);
+  } else {
+    c.likes = (c.likes || 0) + 1;
+    c.likedBy.push(visitorId);
+  }
+  saveCouplets(couplets);
+  renderCouplets();
+}
+
+function renderCouplets() {
+  const couplets = loadCouplets();
+  const container = document.getElementById('coupletsList');
+  let sorted = [...couplets];
+  if (currentTab === 'top') sorted.sort((a,b) => (b.likes||0) - (a.likes||0));
+  else sorted.sort((a,b) => b.id - a.id);
+
+  if (sorted.length === 0) {
+    container.innerHTML = '<div class="empty">Пока ни одного куплета. Будь первым — напиши свой!</div>';
+    return;
+  }
+
+  const visitorId = localStorage.getItem('mxllucid_visitor') || '';
+  container.innerHTML = sorted.map(c => {
+    const liked = (c.likedBy||[]).includes(visitorId);
+    const d = new Date(c.date);
+    return `<div class="couplet-card">
+      <div class="text">${escapeHtml(c.text)}</div>
+      <div class="meta">
+        <span>${d.toLocaleDateString('ru')}</span>
+        <button class="like-btn ${liked?'liked':''}" onclick="toggleLike(${c.id})">
+          ${liked?'❤️':'🤍'} ${c.likes||0}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.textContent === (tab==='top'?'Лучшие':'Новые')));
+  document.getElementById('tabTitle').textContent = tab==='top'?'Лучшие куплеты':'Новые куплеты';
+  renderCouplets();
+}
+
+function escapeHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function share(platform) {
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent('Дописываю куплет к «Эх, яблочко» — народной песне 1917 года. Присоединяйся!');
+  const links = {
+    tg: `https://t.me/share/url?url=${url}&text=${text}`,
+    tw: `https://twitter.com/intent/tweet?text=${text}&url=${url}`
+  };
+  window.open(links[platform], '_blank', 'width=600,height=400');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => showToast('🔗 Ссылка скопирована!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 2500);
+}
+
+// Init
+renderCouplets();
+</script>
+</body>
+</html>
